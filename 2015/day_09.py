@@ -9,10 +9,10 @@ def part_1(input_file: str) -> str:
         input_data = file.readlines()
 
     table = {}
+
     for line in input_data:
         line = line.split(" = ")
         line[0] = line[0].split(" to ")
-        print(line)
         if line[0][0] not in table:
             table[line[0][0]] = {}
         if line[0][1] not in table:
@@ -20,7 +20,27 @@ def part_1(input_file: str) -> str:
         table[line[0][0]][line[0][1]] = int(line[1].rstrip())
         table[line[0][1]][line[0][0]] = int(line[1].rstrip())
 
-    print(table)
+    keys = list(table.keys())
+    permutations = [[]]
+
+    for key in keys:
+        new_permutations = []
+        for p in permutations:
+            for i in range(len(p) + 1):
+                permutation = p.copy()
+                permutation.insert(i, key)
+                new_permutations.append(permutation)
+        permutations = new_permutations
+
+    totals = []
+
+    for permutation in permutations:
+        total = 0
+        for i in range(len(permutation) - 1):
+            total += table[permutation[i]][permutation[i + 1]]
+        totals.append(total)
+
+    answer = str(min(totals))
 
     return answer
 
@@ -31,6 +51,40 @@ def part_2(input_file: str) -> str:
 
     with open(input_file) as file:
         input_data = file.readlines()
+
+    table = {}
+
+    for line in input_data:
+        line = line.split(" = ")
+        line[0] = line[0].split(" to ")
+        if line[0][0] not in table:
+            table[line[0][0]] = {}
+        if line[0][1] not in table:
+            table[line[0][1]] = {}
+        table[line[0][0]][line[0][1]] = int(line[1].rstrip())
+        table[line[0][1]][line[0][0]] = int(line[1].rstrip())
+
+    keys = list(table.keys())
+    permutations = [[]]
+
+    for key in keys:
+        new_permutations = []
+        for p in permutations:
+            for i in range(len(p) + 1):
+                permutation = p.copy()
+                permutation.insert(i, key)
+                new_permutations.append(permutation)
+        permutations = new_permutations
+
+    totals = []
+
+    for permutation in permutations:
+        total = 0
+        for i in range(len(permutation) - 1):
+            total += table[permutation[i]][permutation[i + 1]]
+        totals.append(total)
+
+    answer = str(max(totals))
 
     return answer
 
