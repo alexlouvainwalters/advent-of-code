@@ -1,10 +1,10 @@
-import java.util.HashSet;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 import java.lang.Math;
+
+import java.util.HashSet;
 
 public class Day01 {
 	public static String part1(String inputFile) {
@@ -63,7 +63,9 @@ public class Day01 {
 		int direction = 0;
 		
 		String[] moves = inputText.strip().split(", ");
+		HashSet<String> locations = new HashSet<String>();
 		
+		outer:
 		for (String move : moves) {
 			if (move.charAt(0) == 'R') {
 				direction++;
@@ -71,14 +73,20 @@ public class Day01 {
 				direction += 3;
 			}
 			
-			if (direction % 4 == 0) {
-				vertical += Integer.parseInt(move.substring(1));
-			} else if (direction % 4 == 1) {
-				horizontal += Integer.parseInt(move.substring(1));
-			} else if (direction % 4 == 2) {
-				vertical -= Integer.parseInt(move.substring(1));
-			} else if (direction % 4 == 3) {
-				horizontal -= Integer.parseInt(move.substring(1));
+			for (int i = 0; i < Integer.parseInt(move.substring(1)); i++) {
+				if (direction % 4 == 0) {
+					vertical += 1;
+				} else if (direction % 4 == 1) {
+					horizontal += 1;
+				} else if (direction % 4 == 2) {
+					vertical -= 1;
+				} else if (direction % 4 == 3) {
+					horizontal -= 1;
+				}
+
+				if (!locations.add(vertical + " " + horizontal)) {
+					break outer;
+				}
 			}
 		}
 		
